@@ -1,0 +1,49 @@
+#!/usr/bin/env python3
+
+import os
+import cs50
+import helpers
+import sys
+import nltk
+
+from analyzer import Analyzer
+from termcolor import colored
+
+# accepts one and only one command-line argument, the screen name for a user on Twitter,
+def main():
+    if len(sys.argv) != 2:
+        print("Usage: ./tweets @[User Name]")
+        # note that @ symbol has been removed in search.html before the User Name
+        # this is to prevent the webpage from showing @@ + User Name
+        sys.exit()
+
+# queries Twitter’s API for a user’s most recent 50 tweets,
+    # from helers.py, use get_user_timeline
+
+    User_Name = sys.argv[1]
+    tweets50 = helpers.get_user_timeline(User_Name,50)
+
+    # check if successful
+    if tweets50 == None:
+        print("User Name does not exist or set to private.")
+        sys.exit()
+
+# analyzes the sentiment of each of those tweets, and
+    #absolute paths to lists
+    positives = os.path.join(sys.path[0], "positive-words.txt")
+    negatives = os.path.join(sys.path[0], "negative-words.txt")
+
+    analyzer = Analyzer(positives, negatives)
+
+# outputs each tweet’s score and text, colored in green if positive, red if negative, and yellow otherwise.
+    for tweet in tweets50:
+        score = analyzer.analyze(tweet)
+        if score > 0.0:
+            print(colored("{} {}".format(score, tweet), "green"))
+        elif score < 0.0:
+            print(colored("{} {}".format(score, tweet), "red"))
+        else:
+            print(colored("{} {}".format(score, tweet), "yellow"))
+
+if __name__ == "__main__":
+    main()

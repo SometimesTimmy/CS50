@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+<!-- double curly braces allows for html to pass through python values -->
+    A share of {{ stock.name }} ({{ stock.symbol }}) costs {{ stock.price }}.
+{% endblock %}
