@@ -1,0 +1,45 @@
+What is pneumonoultramicroscopicsilicovolcanoconiosis?
+According to its man page, what does getrusage do?
+Per that same man page, how many members are in a variable of type struct rusage?
+Why do you think we pass before and after by reference (instead of by value) to calculate, even though we’re not changing their contents?
+Explain as precisely as possible, in a paragraph or more, how main goes about reading words from a file. In other words, convince us that you indeed understand how that function’s for loop works.
+Why do you think we used fgetc to read each word’s characters one at a time rather than use fscanf with a format string like "%s" to read whole words at a time? Put another way, what problems might arise by relying on fscanf alone?
+Why do you think we declared the parameters for check and load as const (which means "constant")?
+
+0.  It is the largest word in the "large dictionary" with 45 characters.
+1.  It records the computational time for the functions load(), check(), size(), and unload().
+2.  16 (google search for rusage --> http://www.gnu.org/software/libc/manual/html_node/Resource-Usage.html --> data type)
+3.  It is more efficient to pass through a pointer of a large struct than to enter the contents of the large struct itself.
+4.  speller.c utilizes a function called fgetc.
+    "fgetc returns the character currently pointed by the internal file position indicator of the specified stream.
+    The internal file position indicator is then advanced to the next character.
+    If the stream is at the end-of-file when called, the function returns EOF and sets the end-of-file indicator for the stream (feof)."
+    [source: http://www.cplusplus.com/reference/cstdio/fgetc/]
+
+    In pset5, fgetc advanced through fp until EOF is reached.
+    Every time a character is advanced, it is checked against several if conditions.
+    These conditions are
+        1 if the character is an alphabetal character or an apostrophe so long as the apostrophe is not at index 0
+          then ensure that index is at shorter than 45 per Q1
+        2 if the character is a number, ignore and the next word is considered
+        3 else a whole world is found
+          word is terminated by adding \0 to the end
+          word count is increased by 1
+          check(word) is ran to determine if it is misspelled.
+5.  fscanf will read all non-whitespace character, except format specifier (%).
+    Whitespace characters include spaces, newline and tab characters -- see isspace
+    [source: http://www.cplusplus.com/reference/cstdio/fscanf/]
+
+    Challenge 1)
+    Whitespaces in the dictionary is used to identify the end of a word.
+    fscanf would cotinue if the format of the dictionary is not changed.
+
+    Challenge 2)
+    There are no limit to what the user can input as the text.
+    It is possible for that the user inputs such a long text that we run out of memory.
+
+    Challenge 3)
+    There are no limit to what the user can input as the text.
+    The text can introduce malicious files which can break the program if read as a whole.
+6.  These parameters were never meant to be variables.
+    The use of const ensures that the initial values are used for comparison and are not modified, essentially a safety measure.
