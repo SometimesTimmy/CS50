@@ -1,0 +1,4 @@
+0. The framework allows for a smallest dimension of 3 x 3 and a largest dimension of a 9 x 9.
+1. 2-dimensional integer array
+2. greet()
+3. init()
